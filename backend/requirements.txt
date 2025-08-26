@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+face-recognition
+numpy
+python-multipart
