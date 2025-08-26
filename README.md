@@ -1,6 +1,8 @@
 Facial Recognition App
 ======================
 
+[demo](demo.jpg)  
+
 Installation & Setup
 -------------------
 
