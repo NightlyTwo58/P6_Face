@@ -44,12 +44,14 @@ export default function CameraCaptureApp() {
   }, [useFrontCamera]);
 
   const stopCamera = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((t) => t.stop());
-      streamRef.current = null;
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
     }
-    setIsStreaming(false);
-  }, []);
+    setCapturedBlob(null);
+    setPreviewUrl(null);
+    setResult(null);
+    startCamera();
+  }, [previewUrl]);
 
   useEffect(() => {
     return () => {
@@ -86,13 +88,6 @@ export default function CameraCaptureApp() {
       setCapturedBlob(blob);
       setPreviewUrl(URL.createObjectURL(blob));
     }, "image/jpeg", 0.95);
-  };
-
-  const retake = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setCapturedBlob(null);
-    setPreviewUrl(null);
-    setResult(null);
   };
 
   const submitToBackend = async () => {
@@ -147,12 +142,10 @@ export default function CameraCaptureApp() {
               ) : (
                 <>
                   <button className="button button-secondary" onClick={flipCamera}>Flip Camera</button>
-                  {!previewUrl && <button className="button button-primary" onClick={captureFrame}>Capture</button>}
-                  <button className="button button-secondary" onClick={stopCamera}>Stop</button>
+                  {!previewUrl && <button className="button button-primary" onClick={captureFrame}>Take Picture</button>}
+                  <button className="button button-secondary" onClick={stopCamera}>Reset</button>
                 </>
               )}
-
-              {previewUrl && <button className="button button-danger" onClick={retake}>Retake</button>}
 
               <label className="button button-secondary" style={{ cursor: 'pointer' }}>
                 Upload File
