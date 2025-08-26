@@ -35,6 +35,8 @@ You need to run both the frontend and backend simultaneously in separate termina
 
 2. Frontend:
 
+Put images of faces you wish to recognize in the backend/data/ folder.
+
    ```npm start```
 
 The React app should open automatically in your browser. If your device has a camera, you can start using it to capture images and send them to the backend for recognition.
