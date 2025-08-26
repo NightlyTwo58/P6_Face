@@ -1,8 +1,15 @@
 FROM python:3.10-slim
 WORKDIR /app
-COPY requirements.txt .
-RUN apt-get update && apt-get install -y cmake libgl1 && \
-    pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY . /app
+RUN apt-get update && apt-get install -y \
+        build-essential \
+        cmake \
+        libgl1 \
+        libgtk2.0-dev \
+        pkg-config \
+        libx11-dev \
+        python3-dev \
+    && pip install --no-cache-dir -r requirements.txt
+
 EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

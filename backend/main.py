@@ -1,38 +1,66 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import face_recognition
 import numpy as np
+import os
 
-app = FastAPI()
+app = FastAPI(title="Face Recognition API")
 
-# Pretend database: map "person_name" -> embedding vector
-# In real life you’d load from DB or file
-known_faces = {
-    "Alice": face_recognition.face_encodings(
-        face_recognition.load_image_file("known/alice.jpg")
-    )[0],
-    "Bob": face_recognition.face_encodings(
-        face_recognition.load_image_file("known/bob.jpg")
-    )[0],
-}
+
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+def load_known_faces(data_dir="data"):
+    known_faces = {}
+    for filename in os.listdir(data_dir):
+        if not filename.lower().endswith((".jpg", ".jpeg", ".png")):
+            continue
+        name = os.path.splitext(filename)[0]  # filename without extension
+        path = os.path.join(data_dir, filename)
+        image = face_recognition.load_image_file(path)
+        encodings = face_recognition.face_encodings(image)
+        if not encodings:
+            print(f"Warning: No face found in {filename}")
+            continue
+        known_faces[name] = encodings[0]
+    return known_faces
+
+known_faces = load_known_faces()
 
 @app.post("/recognize")
 async def recognize(file: UploadFile = File(...)):
-    image = face_recognition.load_image_file(file.file)
-    encodings = face_recognition.face_encodings(image)
+    try:
+        image = face_recognition.load_image_file(file.file)
+        encodings = face_recognition.face_encodings(image)
+        if len(encodings) == 0:
+            return JSONResponse({"result": "No face detected"}, status_code=200)
 
-    if len(encodings) == 0:
-        return {"result": "No face detected"}
+        query = encodings[0]
 
-    query = encodings[0]
+        # Compare with known faces
+        results = {name: float(np.linalg.norm(query - emb)) for name, emb in known_faces.items()}
 
-    # Compare with known faces
-    results = {}
-    for name, known_embedding in known_faces.items():
-        distance = np.linalg.norm(known_embedding - query)
-        results[name] = float(distance)
+        if not results:
+            return JSONResponse({"result": "No known faces loaded"}, status_code=200)
 
-    best_match = min(results, key=results.get)
-    if results[best_match] < 0.6:  # threshold
-        return {"result": best_match, "distances": results}
-    else:
-        return {"result": "Unknown", "distances": results}
+        best_match = min(results, key=results.get)
+        distance = results[best_match]
+
+        if distance < 0.6:  # threshold for match
+            return {"result": best_match, "distance": distance, "distances": results}
+        else:
+            return {"result": "Unknown", "distances": results}
+
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)

@@ -3,3 +3,6 @@ uvicorn
 face-recognition
 numpy
 python-multipart
+uvicorn[standard]
+tensorflow
+fastapi
