@@ -3,7 +3,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3000:80"   # React served at localhost:3000
+      - "3000:80"
     depends_on:
       - backend
 
@@ -12,4 +12,4 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app   # so code updates reflect
+      - ./backend:/app   # optional for dev
