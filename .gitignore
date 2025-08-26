@@ -36,3 +36,4 @@ build/
 .env
 
 checkpoints/
+frontend/node_modules
