@@ -1,17 +1,38 @@
-***Facial Recognition App***
+Facial Recognition App
+======================
 
-**Installation & Running**
-*Unforutunately, the Docker container is still WIP. You'll have to manually install with pip.*  
-For dependencies:  
-~~~pip install -r backend/requirements.txt~~~  
+Installation & Setup
+-------------------
 
-You must also have ~~~npm~~~ and ~~~node.js~~~ installed, amongst other things, in order for the frontend to run.  
+Note: The Docker container is still a work in progress. You will need to install dependencies manually.
 
+Backend
+-------
 
-To run:  
-Open two terminals and navigate to the frontend and backend folder respectively. In the frontend terminal:
-~~~npm start~~~
-In the backend terminal:
-~~~uvicorn main:app --reload --host 127.0.0.1 --port 8000~~~
+1. Make sure you have Python installed (3.10+ recommended).  
+2. Install dependencies:
 
-The webpage should open in your browser, and if you have a camera, it might work!
+   pip install -r backend/requirements.txt
+
+Frontend
+--------
+
+1. Make sure you have Node.js and npm installed.  
+2. Navigate to the frontend folder and install dependencies:
+
+   npm install
+
+Running the App
+---------------
+
+You need to run both the frontend and backend simultaneously in separate terminals.
+
+1. Backend:
+
+   uvicorn main:app --reload --host 127.0.0.1 --port 8000
+
+2. Frontend:
+
+   npm start
+
+The React app should open automatically in your browser. If your device has a camera, you can start using it to capture images and send them to the backend for recognition.
