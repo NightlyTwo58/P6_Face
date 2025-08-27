@@ -37,5 +37,4 @@ build/
 
 checkpoints/
 frontend/node_modules
-data/*
-!data/.gitkeep
+data/

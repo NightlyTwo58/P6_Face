@@ -123,7 +123,7 @@ export default function CameraCaptureApp() {
     <div className="app-container">
       <div className="app-inner">
         <h1>Face Recognition Camera</h1>
-        <p>Use your device camera to capture an image, or upload a file, then send it to the backend for recognition.</p>
+        <p>Take or upload an image, then send it to the backend for recognition.</p>
 
         {error && <div className="error-message">{error}</div>}
 

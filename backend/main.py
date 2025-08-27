@@ -21,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def load_known_faces(data_dir="data"):
+def load_known_faces(data_dir):
     known_faces = {}
     for filename in os.listdir(data_dir):
         if not filename.lower().endswith((".jpg", ".jpeg", ".png")):
@@ -36,7 +36,7 @@ def load_known_faces(data_dir="data"):
         known_faces[name] = encodings[0]
     return known_faces
 
-known_faces = load_known_faces()
+known_faces = load_known_faces("data")
 
 @app.post("/recognize")
 async def recognize(file: UploadFile = File(...)):
