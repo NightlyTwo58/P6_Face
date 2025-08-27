@@ -26,6 +26,7 @@ Frontend
 
 Running the App
 ---------------
+Put images of faces you wish to recognize in the backend/data/ folder.  
 
 You need to run both the frontend and backend simultaneously in separate terminals. Navigate to their respective folders before running these commands.
 
