@@ -24,16 +24,16 @@ app.add_middleware(
 def load_known_faces(data_dir):
     known_faces = {}
     for filename in os.listdir(data_dir):
-        if not filename.lower().endswith((".jpg", ".jpeg", ".png")):
-            continue
-        name = os.path.splitext(filename)[0]  # filename without extension
-        path = os.path.join(data_dir, filename)
-        image = face_recognition.load_image_file(path)
-        encodings = face_recognition.face_encodings(image)
-        if not encodings:
-            print(f"Warning: No face found in {filename}")
-            continue
-        known_faces[name] = encodings[0]
+        if filename.lower().endswith((".jpg", ".jpeg", ".png")):
+            print(f"Found face: {filename}")
+            name = os.path.splitext(filename)[0]
+            path = os.path.join(data_dir, filename)
+            image = face_recognition.load_image_file(path)
+            encodings = face_recognition.face_encodings(image)
+            if not encodings:
+                print(f"Warning: No face found in {filename}")
+                continue
+            known_faces[name] = encodings[0]
     return known_faces
 
 known_faces = load_known_faces("data")
@@ -57,7 +57,7 @@ async def recognize(file: UploadFile = File(...)):
         best_match = min(results, key=results.get)
         distance = results[best_match]
 
-        if distance < 0.6:  # threshold for match
+        if distance < 0.6:
             return {"result": best_match, "distance": distance, "distances": results}
         else:
             return {"result": "Unknown", "distances": results}
