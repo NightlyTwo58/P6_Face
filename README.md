@@ -28,13 +28,17 @@ Running the App
 ---------------
 Put images of faces you wish to recognize in the backend/data/ folder.  
 
-You need to run both the frontend and backend simultaneously in separate terminals. Navigate to their respective folders before running these commands.
+You need to run both the frontend and backend simultaneously in separate terminals. Navigate to their respective folders before running these commands. You also need to create a /data folder under /backend with face photos to be recognized, and addition /train and /test folders if you choose to use the in-house MobileNetV2 algorithm (you'll also have to run model.py to train first).  
+ - face_recognition: produces a 128-D encoding vector per face, and you manually compare with known encodings. Flexible but not trainable.  
+ - Keras classifier: learns to directly map raw images → class labels. Requires a fixed training dataset and retraining if you add new people.  
 
 1. Backend:
-
+   face_recognition  
    ```uvicorn main:app --reload --host 127.0.0.1 --port 8000```
-
-2. Frontend:
+   in-house training algorithm  
+   ```uvicorn main_classifier:app --reload --host 127.0.0.1 --port 8000```
+   
+3. Frontend:
 
    ```npm start```
 
