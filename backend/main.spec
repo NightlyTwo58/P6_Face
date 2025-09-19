@@ -1,12 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 models_path = 'c:\\users\\xuena\\appdata\\local\\programs\\python\\python39\\lib\\site-packages'
+models_dir = 'C:\\Users\\xuena\\AppData\\Local\\Programs\\Python\\Python39\\Lib\\site-packages\\face_recognition_models\\models'
 
 a = Analysis(
-    ['main.py'],
+    ['run.py'],
     pathex=['C:\\Users\\xuena\\OneDrive\\Documents\\GitHub\\P6_Face\\backend'],
     binaries=[],
-    datas=[('static', 'static'), ('data', 'data'), (models_path, 'face_recognition_models/models')],
+    datas=[('static', 'static'), ('data', 'data'), (f'{models_dir}\\dlib_face_recognition_resnet_model_v1.dat','face_recognition_models/models'),
+        (f'{models_dir}\\shape_predictor_5_face_landmarks.dat', 'face_recognition_models/models'),
+        (f'{models_dir}\\shape_predictor_68_face_landmarks.dat', 'face_recognition_models/models'),
+        (f'{models_dir}\\mmod_human_face_detector.dat', 'face_recognition_models/models')
+    ],
     hiddenimports=[
         'uvicorn',
         'fastapi',
@@ -14,7 +19,8 @@ a = Analysis(
         'starlette.routing',
         'PIL._imaging',
         'dlib',
-        'face_recognition_models'
+        'face_recognition_models',
+        'main'
     ],
     hookspath=[],
     hooksconfig={},

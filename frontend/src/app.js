@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./CameraCaptureApp.css";
 
 //const API_URL = process.env.REACT_APP_API_URL;
-const API_URL = "";
+const API_URL = "http://127.0.0.1:8000";
 
 export default function CameraCaptureApp() {
   const videoRef = useRef(null);
@@ -165,7 +165,7 @@ export default function CameraCaptureApp() {
                 onClick={submitToBackend}
                 className={`button button-success ${!capturedBlob || loading ? 'button-disabled' : ''}`}
               >
-                {loading ? "Submitting..." : "Send to /recognize"}
+                {loading ? "Submitting..." : "Send to backend /recognize"}
               </button>
             </div>
 

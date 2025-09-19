@@ -1,3 +1,8 @@
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(sys.executable))
+sys.path.insert(0, current_dir)
+
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -5,8 +10,6 @@ import uvicorn
 import face_recognition
 import shutil
 from pathlib import Path
-import os
-import sys
 
 if getattr(sys, 'frozen', False):
     base_path = sys._MEIPASS
@@ -45,7 +48,7 @@ def load_known_faces():
     return encodings, names
 
 
-@app.post("/recognize")
+@app.post("/recognize/")
 async def recognize(file: UploadFile = File(...)):
     tmp_path = Path(FACES_DIR) / "temp.jpg"
     with tmp_path.open("wb") as buffer:
@@ -90,7 +93,3 @@ async def delete_face(filename: str):
         raise HTTPException(status_code=404, detail="File not found")
     os.remove(path)
     return {"message": f"{filename} deleted"}
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8000)
