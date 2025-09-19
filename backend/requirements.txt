@@ -1,8 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 face-recognition
 numpy
 python-multipart
-uvicorn[standard]
-tensorflow
-fastapi

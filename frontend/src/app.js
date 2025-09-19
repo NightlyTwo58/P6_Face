@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./CameraCaptureApp.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+//const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "";
 
 export default function CameraCaptureApp() {
   const videoRef = useRef(null);
