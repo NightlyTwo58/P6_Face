@@ -9,6 +9,9 @@ export default function CameraCaptureApp() {
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
 
+  const unknownInputRef = useRef(null);
+  const knownInputRef   = useRef(null);
+
   const [isStreaming, setIsStreaming] = useState(false);
   const [useFrontCamera, setUseFrontCamera] = useState(true);
   const [capturedBlob, setCapturedBlob] = useState(null);
@@ -51,6 +54,9 @@ export default function CameraCaptureApp() {
     setCapturedBlob(null);
     setPreviewUrl(null);
     setResult(null);
+
+    if (unknownInputRef.current) unknownInputRef.current.value = "";
+
     startCamera();
   }, [previewUrl]);
 
@@ -123,6 +129,7 @@ export default function CameraCaptureApp() {
     const file = e.target.files?.[0];
     if (!file) return;
     if (previewUrl) URL.revokeObjectURL(previewUrl);
+    
     setPreviewUrl(URL.createObjectURL(file));
     setCapturedBlob(file);
   };
@@ -135,6 +142,10 @@ export default function CameraCaptureApp() {
     setKnownFiles(files);
   };
 
+  const onKnownReset = (e) => {
+    if (knownInputRef.current) knownInputRef.current.value = "";
+    setKnownFiles([]);
+  }
 
   return (
     <div className="app-container">
@@ -161,17 +172,19 @@ export default function CameraCaptureApp() {
                   <button className="button button-secondary" onClick={flipCamera}>Flip Camera</button>
                   {!previewUrl && <button className="button button-primary" onClick={captureFrame}>Take Picture</button>}
                   <button className="button button-secondary" onClick={stopCamera}>Reset</button>
+                  <button className="button button-secondary" onClick={onKnownReset}>Reset Known Faces</button>
                 </>
               )}
 
               <label className="button button-secondary" style={{ cursor: 'pointer' }}>
-                Upload File
-                <input type="file" accept="image/*" className="hidden" onChange={onFilePick} />
+                Upload Unknown Face
+                <input ref={unknownInputRef} type="file" accept="image/*" className="hidden" onChange={onFilePick} />
               </label>
 
               <label className="button button-secondary" style={{ cursor: 'pointer' }}>
-                Add Known Faces
+                Upload Known Faces
                 <input
+                  ref={knownInputRef}
                   type="file"
                   accept="image/*"
                   multiple
@@ -191,7 +204,7 @@ export default function CameraCaptureApp() {
           {/* Right Panel */}
           <div style={{ flex: 1, minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="card">
-              <h2>Submission</h2>
+              <h2>Submit</h2>
               <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>Backend URL: <code>{API_URL}</code></p>
               <button
                 disabled={!capturedBlob || loading}
@@ -203,7 +216,7 @@ export default function CameraCaptureApp() {
             </div>
 
             <div className="card">
-              <h2>Result</h2>
+              <h2>Classification</h2>
               {!result && (
                 <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>No result yet.</p>
               )}
@@ -230,6 +243,21 @@ export default function CameraCaptureApp() {
                     </div>
                   )}
                 </div>
+              )}
+            </div>
+
+            <div className="card">
+              <h2>Additional Known Faces</h2>
+              {knownFiles.length === 0 ? (
+                <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>
+                  No additional known faces added.
+                </p>
+              ) : (
+                <ul style={{ fontSize: "0.875rem", color: "#111", lineHeight: "1.5" }}>
+                  {knownFiles.map((file, idx) => (
+                    <li key={idx}>{file.name}</li>
+                  ))}
+                </ul>
               )}
             </div>
           </div>
