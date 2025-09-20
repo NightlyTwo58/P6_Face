@@ -30,8 +30,6 @@ app.add_middleware(
 STATIC_DIR = os.path.join(base_path, "static")
 FACES_DIR = os.path.join(base_path, "data")
 
-app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
-
 # FACES_DIR = Path(__file__).parent / "data"
 # FACES_DIR.mkdir(exist_ok=True)
 
@@ -50,22 +48,19 @@ def load_known_faces():
 
 @app.post("/recognize/")
 async def recognize(file: UploadFile = File(...)):
-    tmp_path = Path(FACES_DIR) / "temp.jpg"
-    with tmp_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    unknown = face_recognition.load_image_file(file.file)
 
-    unknown = face_recognition.load_image_file(str(tmp_path))
     unknown_encs = face_recognition.face_encodings(unknown)
     if not unknown_encs:
         raise HTTPException(status_code=400, detail="No face detected")
 
     known_encs, names = load_known_faces()
-    results = face_recognition.face_distance(known_encs, unknown_encs[0]) if known_encs else []
+    if not known_encs:
+        raise HTTPException(status_code=400, detail="No known faces available")
 
-    if not results:
-        return {"result": "No known faces", "distances": {}}
-
+    results = face_recognition.face_distance(known_encs, unknown_encs[0])
     best_idx = results.argmin()
+
     return {
         "result": names[best_idx],
         "distance": float(results[best_idx]),
@@ -93,3 +88,5 @@ async def delete_face(filename: str):
         raise HTTPException(status_code=404, detail="File not found")
     os.remove(path)
     return {"message": f"{filename} deleted"}
+
+app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")

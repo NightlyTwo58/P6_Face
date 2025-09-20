@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./CameraCaptureApp.css";
 
-//const API_URL = process.env.REACT_APP_API_URL;
-const API_URL = "http://127.0.0.1:8000";
+// const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = 'http://127.0.0.1:8000';
 
 export default function CameraCaptureApp() {
   const videoRef = useRef(null);
@@ -100,7 +100,7 @@ export default function CameraCaptureApp() {
       const form = new FormData();
       form.append("file", capturedBlob, "capture.jpg");
 
-      const res = await fetch(`${API_URL}/recognize`, { method: "POST", body: form });
+      const res = await fetch(`${API_URL}/recognize/`, { method: "POST", body: form });
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
       setResult(await res.json());
     } catch (e) {
