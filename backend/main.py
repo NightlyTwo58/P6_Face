@@ -47,17 +47,31 @@ def load_known_faces():
 
 
 @app.post("/recognize/")
-async def recognize(file: UploadFile = File(...)):
+async def recognize(
+    file: UploadFile = File(...),
+    known_faces: list[UploadFile] = File(default=[])
+):
+    # Load unknown image
     unknown = face_recognition.load_image_file(file.file)
-
     unknown_encs = face_recognition.face_encodings(unknown)
     if not unknown_encs:
-        raise HTTPException(status_code=400, detail="No face detected")
+        return {"result": "No face detected in target image"}
 
+    # Load known faces from disk
     known_encs, names = load_known_faces()
-    if not known_encs:
-        raise HTTPException(status_code=400, detail="No known faces available")
 
+    # Load any uploaded known faces in-memory
+    for kf in known_faces:
+        img = face_recognition.load_image_file(kf.file)
+        encs = face_recognition.face_encodings(img)
+        if encs:
+            known_encs.append(encs[0])
+            names.append(kf.filename.rsplit(".", 1)[0])
+
+    if not known_encs:
+        return {"result": "No known faces available"}
+
+    # Compute distances
     results = face_recognition.face_distance(known_encs, unknown_encs[0])
     best_idx = results.argmin()
 

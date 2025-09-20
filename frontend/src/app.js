@@ -98,9 +98,16 @@ export default function CameraCaptureApp() {
     setResult(null);
     try {
       const form = new FormData();
-      form.append("file", capturedBlob, "capture.jpg");
+      form.append("file", capturedBlob, "capture.jpg"); // match backend param
 
-      const res = await fetch(`${API_URL}/recognize/`, { method: "POST", body: form });
+      // append known faces if any
+      knownFiles.forEach((f) => form.append("known_faces", f, f.name));
+
+      const res = await fetch(`${API_URL}/recognize/`, {
+        method: "POST",
+        body: form
+      });
+
       if (!res.ok) throw new Error(`Backend error: ${res.status}`);
       setResult(await res.json());
     } catch (e) {
@@ -119,6 +126,15 @@ export default function CameraCaptureApp() {
     setPreviewUrl(URL.createObjectURL(file));
     setCapturedBlob(file);
   };
+
+  // user-chosen recognize
+  const [knownFiles, setKnownFiles] = useState([]);
+
+  const onKnownPick = (e) => {
+    const files = Array.from(e.target.files || []);
+    setKnownFiles(files);
+  };
+
 
   return (
     <div className="app-container">
@@ -152,6 +168,23 @@ export default function CameraCaptureApp() {
                 Upload File
                 <input type="file" accept="image/*" className="hidden" onChange={onFilePick} />
               </label>
+
+              <label className="button button-secondary" style={{ cursor: 'pointer' }}>
+                Add Known Faces
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={onKnownPick}
+                />
+              </label>
+
+              {knownFiles.length > 0 && (
+                <p style={{ fontSize: '0.75rem', marginTop: '0.5rem' }}>
+                  {knownFiles.length} known face{knownFiles.length > 1 ? "s" : ""} selected
+                </p>
+              )}
             </div>
           </div>
 
