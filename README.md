@@ -1,12 +1,25 @@
 Facial Recognition App
 ======================
 
-![demo](demo.jpg)  
+This is a full-stack application that uses a FastAPI backend for face recognition and a React frontend for the user interface, packaged into a standalone main.exe. The React frontend running in the user's browser acts as the client, capturing and sending images to the backend via a RESTful API for processing. The backend processes the image using the [face_recognition](https://github.com/ageitgey/face_recognition) library and returns a JSON response to the frontend.
 
-Installation & Setup
+*Features*  
+-    Real-time Camera Access: Images are captured directly from users' brower webcam. Users can alternatively upload a local image file.
+-    Face Recognition: The FastAPI backend, powered by the face_recognition and dlib libraries, processes the captured image to detect and recognize faces.
+-    Dynamic Database: The application supports dynamically adding and deleting "known" faces to its recognition database via API endpoints in a session.
+-    Standalone Executable: The entire backend, including all Python dependencies and the React build, is bundled into a single .exe file without requiring a Python environment on the user's machine.
+
+Recommended
 -------------------
+Download the [executable](https://github.com/NightlyTwo58/P6_Face/releases/download/v1.0.0/main.exe) packaged in the [release](https://github.com/NightlyTwo58/P6_Face/releases/). It should be ready for use without any dependencies. When run, it should start a terminal. Make sure to Ctrl+Click the IP address that pops up to open the app hosted locally.  
 
-Note: The Docker container is still a work in progress. You will need to install dependencies manually.
+![demo](demo.jpg)
+
+
+The developer setup is in detail below.  
+
+Developer Setup
+======================
 
 Backend
 -------
@@ -33,9 +46,13 @@ You need to run both the frontend and backend simultaneously in separate termina
  - Keras classifier: learns to directly map raw images → class labels. Requires a fixed training dataset and retraining if you add new people.  
 
 1. Backend:
-   face_recognition  
+   
+   [face_recognition](https://github.com/ageitgey/face_recognition) algorithm
+   
    ```uvicorn main:app --reload --host 127.0.0.1 --port 8000```
-   in-house training algorithm  
+   
+   in-house training algorithm
+   
    ```uvicorn main_classifier:app --reload --host 127.0.0.1 --port 8000```
    
 3. Frontend:
