@@ -1,7 +1,7 @@
 Facial Recognition App
 ======================
 
-This is a full-stack application that uses a FastAPI backend for face recognition and a React frontend for the user interface, packaged into a standalone main.exe. The React frontend running in the user's browser acts as the client, capturing and sending images to the backend via a RESTful API for processing. The backend processes the image using the [face_recognition](https://github.com/ageitgey/face_recognition) library and returns a JSON response to the frontend.
+This is a full-stack application that uses a FastAPI backend for face recognition and a React frontend for the user interface, packaged into a standalone main.exe. The React frontend running in a browser acts as the client, capturing and sending images to the backend via a RESTful API for processing. The backend processes the image using the [face_recognition](https://github.com/ageitgey/face_recognition) library and returns a JSON response to the frontend.
 
 *Features*  
 -    Real-time Camera Access: Images are captured directly from users' brower webcam. Users can alternatively upload a local image file.
@@ -9,7 +9,7 @@ This is a full-stack application that uses a FastAPI backend for face recognitio
 -    Dynamic Database: The application supports dynamically adding and deleting "known" faces to its recognition database via API endpoints in a session.
 -    Standalone Executable: The entire backend, including all Python dependencies and the React build, is bundled into a single .exe file without requiring a Python environment on the user's machine.
 
-Recommended
+Recommended App Run
 -------------------
 Download the [executable](https://github.com/NightlyTwo58/P6_Face/releases/download/v1.0.0/main.exe) packaged in the [release](https://github.com/NightlyTwo58/P6_Face/releases/). It should be ready for use without any dependencies. When run, it should start a terminal. Make sure to Ctrl+Click the IP address that pops up to open the app hosted locally.  
 
@@ -37,7 +37,7 @@ Frontend
 
    ```npm install```
 
-Running the App
+Developer App Run
 ---------------
 Put images of faces you wish to recognize in the backend/data/ folder.  
 

@@ -1,13 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-models_path = 'c:\\users\\xuena\\appdata\\local\\programs\\python\\python39\\lib\\site-packages'
 models_dir = 'C:\\Users\\xuena\\AppData\\Local\\Programs\\Python\\Python39\\Lib\\site-packages\\face_recognition_models\\models'
+project_path = 'C:\\Users\\xuena\\OneDrive\\Documents\\GitHub\\P6_Face\\backend'
 
 a = Analysis(
-    ['run.py'],
-    pathex=['C:\\Users\\xuena\\OneDrive\\Documents\\GitHub\\P6_Face\\backend'],
+    ['main.py'],
+    pathex=[project_path],
     binaries=[],
-    datas=[('static', 'static'), ('data', 'data'), (f'{models_dir}\\dlib_face_recognition_resnet_model_v1.dat','face_recognition_models/models'),
+    datas=[
+        ('static', 'static'),
+        ('data', 'data'),
+        # Face Recognition models
+        (f'{models_dir}\\dlib_face_recognition_resnet_model_v1.dat','face_recognition_models/models'),
         (f'{models_dir}\\shape_predictor_5_face_landmarks.dat', 'face_recognition_models/models'),
         (f'{models_dir}\\shape_predictor_68_face_landmarks.dat', 'face_recognition_models/models'),
         (f'{models_dir}\\mmod_human_face_detector.dat', 'face_recognition_models/models')
@@ -20,7 +24,12 @@ a = Analysis(
         'PIL._imaging',
         'dlib',
         'face_recognition_models',
-        'main'
+        # PyQt5 and QtWebEngine dependencies
+        'PyQt5',
+        'PyQt5.QtCore',
+        'PyQt5.QtWidgets',
+        'PyQt5.QtWebEngineWidgets',
+        'PyQt5.QtWebEngineCore',
     ],
     hookspath=[],
     hooksconfig={},
@@ -37,17 +46,27 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='main',
+    name='FaceRecognitionApp',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='FaceRecognitionApp'
 )

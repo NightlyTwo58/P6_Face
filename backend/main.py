@@ -1,5 +1,10 @@
 import os
 import sys
+import threading
+import time
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWidgets import QApplication, QMainWindow
 current_dir = os.path.dirname(os.path.abspath(sys.executable))
 sys.path.insert(0, current_dir)
 
@@ -29,10 +34,8 @@ app.add_middleware(
 
 STATIC_DIR = os.path.join(base_path, "static")
 FACES_DIR = os.path.join(base_path, "data")
-
-# FACES_DIR = Path(__file__).parent / "data"
-# FACES_DIR.mkdir(exist_ok=True)
-
+if not os.path.exists(FACES_DIR):
+    os.makedirs(FACES_DIR)
 
 def load_known_faces():
     encodings = []
@@ -45,22 +48,18 @@ def load_known_faces():
             names.append(file.stem)
     return encodings, names
 
-
 @app.post("/recognize/")
 async def recognize(
     file: UploadFile = File(...),
     known_faces: list[UploadFile] = File(default=[])
 ):
-    # Load unknown image
     unknown = face_recognition.load_image_file(file.file)
     unknown_encs = face_recognition.face_encodings(unknown)
     if not unknown_encs:
         return {"result": "No face detected in target image"}
 
-    # Load known faces from disk
     known_encs, names = load_known_faces()
 
-    # Load any uploaded known faces in-memory
     for kf in known_faces:
         img = face_recognition.load_image_file(kf.file)
         encs = face_recognition.face_encodings(img)
@@ -71,7 +70,6 @@ async def recognize(
     if not known_encs:
         return {"result": "No known faces available"}
 
-    # Compute distances
     results = face_recognition.face_distance(known_encs, unknown_encs[0])
     best_idx = results.argmin()
 
@@ -81,26 +79,53 @@ async def recognize(
         "distances": {names[i]: float(d) for i, d in enumerate(results)}
     }
 
-
 @app.get("/faces")
 async def list_faces():
-    return {"faces": [f.name for f in FACES_DIR.glob("*.jpg")]}
-
+    return {"faces": [f.name for f in Path(FACES_DIR).glob("*.jpg")]}
 
 @app.post("/faces/upload")
 async def upload_face(file: UploadFile = File(...)):
-    out_path = FACES_DIR / file.filename
+    out_path = Path(FACES_DIR) / file.filename
     with out_path.open("wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     return {"message": f"Face {file.filename} uploaded."}
 
-
 @app.delete("/faces/delete/{filename}")
 async def delete_face(filename: str):
-    path = FACES_DIR / filename
+    path = Path(FACES_DIR) / filename
     if not path.exists():
         raise HTTPException(status_code=404, detail="File not found")
     os.remove(path)
     return {"message": f"{filename} deleted"}
 
 app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
+
+def run_fastapi_server():
+    """Function to run the FastAPI server."""
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="warning")
+
+class Browser(QMainWindow):
+    """The main application window."""
+    def __init__(self, url):
+        super().__init__()
+        self.browser = QWebEngineView()
+        self.browser.setUrl(QUrl(url))
+        self.setCentralWidget(self.browser)
+        self.setGeometry(100, 100, 1200, 800)
+        self.setWindowTitle("Face Recognition App")
+
+def start_app():
+    """Main function to start both the server and the GUI."""
+    server_thread = threading.Thread(target=run_fastapi_server)
+    server_thread.daemon = True
+    server_thread.start()
+
+    time.sleep(2)
+
+    app_qt = QApplication(sys.argv)
+    browser = Browser("http://127.0.0.1:8000")
+    browser.show()
+    sys.exit(app_qt.exec_())
+
+if __name__ == "__main__":
+    start_app()
