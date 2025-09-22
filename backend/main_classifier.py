@@ -8,7 +8,7 @@ import numpy as np
 import traceback
 import json
 
-with open("class_names.json") as f:
+with open("data/class_names.json") as f:
     class_names = json.load(f)
 
 model = load_model("face_model.h5")

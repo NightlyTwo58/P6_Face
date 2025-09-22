@@ -58,7 +58,7 @@ export default function CameraCaptureApp() {
     if (unknownInputRef.current) unknownInputRef.current.value = "";
 
     startCamera();
-  }, [previewUrl]);
+  }, [previewUrl, startCamera]);
 
   useEffect(() => {
     return () => {
@@ -275,6 +275,27 @@ export default function CameraCaptureApp() {
                   ))}
                 </ul>
               )}
+            </div>
+
+            <div className="card">
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <a 
+                      href="https://github.com/NightlyTwo58"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="button button-secondary"
+                  >
+                      Visit Me!
+                  </a>
+                  <a
+                      href="https://github.com/ageitgey/face_recognition"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="button button-secondary"
+                  >
+                      face_recognition Library
+                  </a>
+              </div>
             </div>
           </div>
         </div>

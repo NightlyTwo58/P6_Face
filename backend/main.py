@@ -2,10 +2,10 @@ import os
 import sys
 import threading
 import time
-from PyQt5.QtCore import QUrl
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
-from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInfo
-from PyQt5.QtWidgets import QApplication, QMainWindow
+import webbrowser
+# from PyQt5.QtCore import QUrl
+# from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+# from PyQt5.QtWidgets import QApplication, QMainWindow
 current_dir = os.path.dirname(os.path.abspath(sys.executable))
 sys.path.insert(0, current_dir)
 
@@ -103,41 +103,59 @@ app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
 
 def run_fastapi_server():
     """Function to run the FastAPI server."""
-    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="warning")
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="debug")
 
-class WebEnginePage(QWebEnginePage):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+# class WebEnginePage(QWebEnginePage):
+#     def __init__(self, parent=None):
+#         super().__init__(parent)
 
-    def onFeaturePermissionRequested(self, origin, feature):
-        if feature == QWebEnginePage.MediaAudioCapture or feature == QWebEnginePage.MediaVideoCapture:
-            self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionGrantedByUser)
-        else:
-            self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionDeniedByUser)
+#     def onFeaturePermissionRequested(self, origin, feature):
+#         if feature == QWebEnginePage.MediaAudioCapture or feature == QWebEnginePage.MediaVideoCapture:
+#             self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionGrantedByUser)
+#         else:
+#             self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionDeniedByUser)
 
-class Browser(QMainWindow):
-    """The main application window."""
-    def __init__(self, url):
-        super().__init__()
-        self.browser = QWebEngineView()
-        self.browser.setPage(WebEnginePage(self.browser))
-        self.browser.setUrl(QUrl(url))
-        self.setCentralWidget(self.browser)
-        self.setGeometry(100, 100, 1200, 800)
-        self.setWindowTitle("Face Recognition App")
+# class Browser(QMainWindow):
+#     """The main application window."""
+#     def __init__(self, url):
+#         super().__init__()
+#         self.browser = QWebEngineView()
+#         self.browser.setPage(WebEnginePage(self.browser))
+#         self.browser.setUrl(QUrl(url))
+#         self.setCentralWidget(self.browser)
+#         self.setGeometry(100, 100, 1200, 800)
+#         self.setWindowTitle("Face Recognition App")
 
-def start_app():
-    """Main function to start both the server and the GUI."""
+# def start_app():
+#     """Main function to start both the server and the GUI."""
+#     server_thread = threading.Thread(target=run_fastapi_server)
+#     server_thread.daemon = True
+#     server_thread.start()
+
+#     time.sleep(2)
+
+#     app_qt = QApplication(sys.argv)
+#     browser = Browser("http://127.0.0.1:8000")
+#     browser.show()
+#     sys.exit(app_qt.exec_())
+
+if __name__ == "__main__":
+    run_fastapi_server()
+    # start_app()
+
+if __name__ == "__main__":
+    run_fastapi_server()
+
     server_thread = threading.Thread(target=run_fastapi_server)
     server_thread.daemon = True
     server_thread.start()
 
     time.sleep(2)
 
-    app_qt = QApplication(sys.argv)
-    browser = Browser("http://127.0.0.1:8000")
-    browser.show()
-    sys.exit(app_qt.exec_())
-
-if __name__ == "__main__":
-    start_app()
+    webbrowser.open("http://127.0.0.1:8000")
+    
+    try:
+        while True:
+            time.sleep(1)
+    except (KeyboardInterrupt, SystemExit):
+        print("Application closed.")
