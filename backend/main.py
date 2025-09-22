@@ -3,7 +3,8 @@ import sys
 import threading
 import time
 from PyQt5.QtCore import QUrl
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInfo
 from PyQt5.QtWidgets import QApplication, QMainWindow
 current_dir = os.path.dirname(os.path.abspath(sys.executable))
 sys.path.insert(0, current_dir)
@@ -104,11 +105,22 @@ def run_fastapi_server():
     """Function to run the FastAPI server."""
     uvicorn.run(app, host="127.0.0.1", port=8000, log_level="warning")
 
+class WebEnginePage(QWebEnginePage):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+    def onFeaturePermissionRequested(self, origin, feature):
+        if feature == QWebEnginePage.MediaAudioCapture or feature == QWebEnginePage.MediaVideoCapture:
+            self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionGrantedByUser)
+        else:
+            self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionDeniedByUser)
+
 class Browser(QMainWindow):
     """The main application window."""
     def __init__(self, url):
         super().__init__()
         self.browser = QWebEngineView()
+        self.browser.setPage(WebEnginePage(self.browser))
         self.browser.setUrl(QUrl(url))
         self.setCentralWidget(self.browser)
         self.setGeometry(100, 100, 1200, 800)
