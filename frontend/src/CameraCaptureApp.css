@@ -28,7 +28,6 @@ h2 {
 /* Cards */
 .card {
   background: #fff;
-  border-radius: 1rem;
   padding: 1rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   border: 1px solid #e5e7eb;
@@ -37,7 +36,6 @@ h2 {
 .card pre {
   background: #f3f4f6;
   padding: 0.5rem;
-  border-radius: 0.5rem;
   overflow-x: auto;
 }
 
@@ -46,7 +44,6 @@ h2 {
   width: 100%;
   max-width: 640px; /* optional */
   aspect-ratio: 16 / 9; /* forces consistent 16:9 */
-  border-radius: 1rem;
   overflow: hidden;
   background: #00000010;
   border: 1px solid #d1d5db;
@@ -68,7 +65,7 @@ h2 {
 /* Buttons */
 .button {
   padding: 0.5rem 1rem;
-  border-radius: 0.75rem;
+  border-radius: 0.3rem;
   cursor: pointer;
   font-weight: 500;
   transition: background 0.2s;

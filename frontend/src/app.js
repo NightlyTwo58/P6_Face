@@ -168,34 +168,40 @@ export default function CameraCaptureApp() {
               <canvas ref={canvasRef} className="hidden"></canvas>
             </div>
 
-            <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {!isStreaming ? (
-                <button className="button button-primary" onClick={() => startCamera()}>Start Camera</button>
-              ) : (
-                <>
-                  <button className="button button-secondary" onClick={flipCamera}>Flip Camera</button>
-                  {!previewUrl && <button className="button button-primary" onClick={captureFrame}>Take Picture</button>}
-                  <button className="button button-secondary" onClick={stopCamera}>Reset</button>
-                  <button className="button button-secondary" onClick={onKnownReset}>Reset Known Faces</button>
-                </>
-              )}
+            <div className="card" style={{ marginTop: '.5rem' }}>
+              <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                {!isStreaming ? (
+                  <button className="button button-primary" onClick={() => startCamera()}>Start Camera</button>
+                ) : (
+                  <>
+                    <button className="button button-secondary" onClick={flipCamera}>Flip Camera</button>
+                    {!previewUrl && <button className="button button-primary" onClick={captureFrame}>Take Picture</button>}
+                    <button className="button button-secondary" onClick={stopCamera}>Reset</button>
+                    <button className="button button-secondary" onClick={onKnownReset}>Reset Known Faces</button>
+                  </>
+                )}
+              </div>
+            </div>
 
-              <label className="button button-secondary" style={{ cursor: 'pointer' }}>
-                Upload Unknown Face
-                <input ref={unknownInputRef} type="file" accept="image/*" className="hidden" onChange={onFilePick} />
-              </label>
+            <div className="card">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <label className="button button-secondary" style={{ cursor: 'pointer' }}>
+                  Upload Unknown Face
+                  <input ref={unknownInputRef} type="file" accept="image/*" className="hidden" onChange={onFilePick} />
+                </label>
 
-              <label className="button button-secondary" style={{ cursor: 'pointer' }}>
-                Upload Known Faces
-                <input
-                  ref={knownInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={onKnownPick}
-                />
-              </label>
+                <label className="button button-secondary" style={{ cursor: 'pointer' }}>
+                  Upload Known Faces
+                  <input
+                    ref={knownInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={onKnownPick}
+                  />
+                </label>
+              </div>
 
               {knownFiles.length > 0 && (
                 <p style={{ fontSize: '0.75rem', marginTop: '0.5rem' }}>
