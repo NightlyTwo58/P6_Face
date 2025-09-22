@@ -150,6 +150,10 @@ export default function CameraCaptureApp() {
   return (
     <div className="app-container">
       <div className="app-inner">
+        <button onClick={() => window.location.reload()} style={{ position: 'absolute', top: '1rem', right: '1rem', zIndex: 10 }} className="button button-danger">Reset App</button>
+        <p style={{ position: 'absolute', top: '1rem', left: '1rem' }}>
+          <a href="https://github.com/NightlyTwo58/P6_Face" target="_blank" rel="noopener noreferrer">Contribute! GitHub Repository</a>
+        </p>
         <h1>Face Recognition Camera</h1>
         <p>Take or upload an image, then send it to the backend for recognition.</p>
 
@@ -204,15 +208,21 @@ export default function CameraCaptureApp() {
           {/* Right Panel */}
           <div style={{ flex: 1, minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="card">
-              <h2>Submit</h2>
+              <h2>Submit for Recognition</h2>
               <p style={{ fontSize: '0.75rem', color: '#6b7280' }}>Backend URL: <code>{API_URL}</code></p>
               <button
                 disabled={!capturedBlob || loading}
                 onClick={submitToBackend}
                 className={`button button-success ${!capturedBlob || loading ? 'button-disabled' : ''}`}
               >
-                {loading ? "Submitting..." : "Send to backend /recognize"}
+                Recognize this face!
               </button>
+              {loading && (
+                <div style={{ display: 'flex', alignItems: 'left', justifyContent: 'left', gap: '0.5rem', marginTop: '0.5rem' }}>
+                  <span className="spinner large-spinner">⏳</span>
+                  <span>Submitting...</span>
+                </div>
+              )}
             </div>
 
             <div className="card">
