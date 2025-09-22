@@ -42,7 +42,6 @@ h2 {
 .video-container {
   position: relative;
   width: 100%;
-  max-width: 640px; /* optional */
   aspect-ratio: 16 / 9; /* forces consistent 16:9 */
   overflow: hidden;
   background: #00000010;

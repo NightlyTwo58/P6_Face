@@ -24,7 +24,6 @@ a = Analysis(
         'PIL._imaging',
         'dlib',
         'face_recognition_models',
-        # PyQt5 and QtWebEngine dependencies
         'PyQt5',
         'PyQt5.QtCore',
         'PyQt5.QtWidgets',
@@ -46,7 +45,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='FaceRecognitionApp',
+    name='CFace',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

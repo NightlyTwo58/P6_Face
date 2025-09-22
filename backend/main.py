@@ -103,7 +103,7 @@ app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
 
 def run_fastapi_server():
     """Function to run the FastAPI server."""
-    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="warning")
+    uvicorn.run(app, host="127.0.0.1", port=8000, log_level="debug")
 
 class WebEnginePage(QWebEnginePage):
     def __init__(self, parent=None):
