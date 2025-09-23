@@ -15,10 +15,10 @@ Download the [executable](https://github.com/NightlyTwo58/P6_Face/releases/downl
 
 <table>
   <tr>
-    <td><img src="demo_new.png" width="600"/></td>
+    <td><img src="demo_new.png" width="800"/></td>
   </tr>
   <tr>
-    <td><img src="demo1_new.png" width="600"/></td>
+    <td><img src="demo1_new.png" width="800"/></td>
   </tr>
 </table>
 

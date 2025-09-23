@@ -10,7 +10,7 @@
 .sidebar {
   width: 60px;
   min-width: 60px;
-  background-color: #1f2937;
+  background-color: #66a6c1;
   color: white;
   padding: 1rem;
   transition: width 0.3s ease-in-out;
@@ -19,7 +19,7 @@
   height: 100vh;
   overflow-y: auto;
   flex-shrink: 0;
-  border-right: 1px solid #374151;
+  border-right: 1px solid #4b4f56;
   display: flex;
   flex-direction: column;
 }
@@ -38,7 +38,7 @@
 
 .sidebar a {
   display: block;
-  color: #d1d5db;
+  color: #ffffff;
   text-decoration: none;
   padding: 0.5rem 0.25rem;
   transition: color 0.2s;
@@ -89,7 +89,7 @@ h2 {
 .card {
   background: #fff;
   padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 4px rgba(0,0,0,0.05);
   border: 1px solid #e5e7eb;
 }
 
@@ -102,7 +102,7 @@ h2 {
 .video-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9; /* forces consistent 16:9 */
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #00000010;
   border: 1px solid #d1d5db;

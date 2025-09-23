@@ -67,5 +67,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='FaceRecognitionApp'
+    name='CFace_Desktop'
 )

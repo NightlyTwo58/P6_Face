@@ -109,9 +109,10 @@ def run_fastapi_server():
 class WebEnginePage(QWebEnginePage):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.featurePermissionRequested.connect(self.onFeaturePermissionRequested)
 
     def onFeaturePermissionRequested(self, origin, feature):
-        if feature == QWebEnginePage.MediaAudioCapture or feature == QWebEnginePage.MediaVideoCapture:
+        if feature in [QWebEnginePage.MediaAudioCapture, QWebEnginePage.MediaVideoCapture]:
             self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionGrantedByUser)
         else:
             self.setFeaturePermission(origin, feature, QWebEnginePage.PermissionDeniedByUser)
