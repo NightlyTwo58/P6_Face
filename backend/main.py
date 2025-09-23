@@ -6,6 +6,7 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInfo
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QIcon
 current_dir = os.path.dirname(os.path.abspath(sys.executable))
 sys.path.insert(0, current_dir)
 
@@ -126,6 +127,9 @@ class Browser(QMainWindow):
         self.setGeometry(100, 100, 1200, 800)
         self.setWindowTitle("Face Recognition App")
 
+        icon_path = os.path.join(base_path, "favicon.ico")
+        self.setWindowIcon(QIcon(icon_path))
+
 def start_app():
     """Main function to start both the server and the GUI."""
     server_thread = threading.Thread(target=run_fastapi_server)
@@ -135,6 +139,8 @@ def start_app():
     time.sleep(2)
 
     app_qt = QApplication(sys.argv)
+    icon_path = os.path.join(base_path, "your_icon_name.ico")
+    app_qt.setWindowIcon(QIcon(icon_path))
     browser = Browser("http://127.0.0.1:8000")
     browser.show()
     sys.exit(app_qt.exec_())

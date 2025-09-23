@@ -11,14 +11,14 @@ This is a full-stack application that uses a FastAPI backend for face recognitio
 
 Recommended App Run
 -------------------
-Download the [executable](https://github.com/NightlyTwo58/P6_Face/releases/download/v1.0.1/main.exe) packaged in the [release](https://github.com/NightlyTwo58/P6_Face/releases/). It should be ready for use without any dependencies. When run, it should start a terminal. Make sure to Ctrl+Click the IP address that pops up to open the app hosted locally.  
+Download the [executable](https://github.com/NightlyTwo58/P6_Face/releases/download/v1.0.1/main.exe) packaged in the latest [release](https://github.com/NightlyTwo58/P6_Face/releases/). It should be ready for use without any dependencies. If you're running the web version, it should start a terminal. Make sure to Ctrl+Click the IP address that pops up to open the app hosted locally. The local version shouldn't require anything else than starting the .exe. 
 
 <table>
   <tr>
-    <td><img src="demo_new.png" width="400"/></td>
+    <td><img src="demo_new.png" width="600"/></td>
   </tr>
   <tr>
-    <td><img src="demo1_new.png" width="400"/></td>
+    <td><img src="demo1_new.png" width="600"/></td>
   </tr>
 </table>
 

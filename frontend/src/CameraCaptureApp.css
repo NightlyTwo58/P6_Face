@@ -4,10 +4,70 @@
   background-color: #f9fafb;
   color: #111827;
   font-family: 'Inter', sans-serif;
-  padding: 2rem;
+  display: flex;
 }
 
-.app-inner {
+.sidebar {
+  width: 60px;
+  min-width: 60px;
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem;
+  transition: width 0.3s ease-in-out;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  border-right: 1px solid #374151;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.expanded {
+  width: 250px;
+  min-width: 100px;
+}
+
+.sidebar .nav-links {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar a {
+  display: block;
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 0.5rem 0.25rem;
+  transition: color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar a:hover {
+  color: #fff;
+}
+
+.sidebar .sidebar-content {
+  flex-grow: 1; /* Fills remaining space in the sidebar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hides content that overflows during transition */
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.sidebar:not(.expanded) .sidebar-content {
+  opacity: 0;
+  visibility: hidden;
+  height: 0; /* Collapses content when sidebar is not expanded */
+}
+
+/* Main content area */
+.main-content {
+  flex-grow: 1;
   max-width: 1024px;
   margin: 0 auto;
 }
